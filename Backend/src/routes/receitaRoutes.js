@@ -9,6 +9,4 @@ router.post('/receita', receitaController.create);
 router.put('/receita/:id', receitaController.update);
 router.delete('/receita/:id', receitaController.delete);
 
-router.get('/receita/usuario/:id_usuario', receitaController.listarPorUsuario);
-
 export default router;

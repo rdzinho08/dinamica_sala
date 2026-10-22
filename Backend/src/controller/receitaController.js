@@ -1,15 +1,15 @@
 import db from "../config/db.js";
 
-export const receitasController = {
+export const receitaController = {
   async getAll(req, res) {
     try {
       const result = await db.query(
-        `SELECT r.id, r.titulo, r.origem, r.imagem, r.id_usuario, u.nome AS chef,
-                COUNT(f.id)::int AS total_favoritos
-         FROM receitas r
-         JOIN usuarios u ON r.id_usuario = u.id
-         LEFT JOIN favoritos f ON f.id_receita = r.id
-         GROUP BY r.id, r.titulo, r.origem, r.imagem, r.id_usuario, u.nome`
+        `SELECT r.id_receita, r.titulo_receita, r.origem_receita, r.url_imagem, r.id_usuario, u.nome AS chef,
+                COUNT(f.id_favorito)::int AS total_favorito
+         FROM public.receita r
+         JOIN public.usuario u ON r.id_usuario = u.id_usuario
+         LEFT JOIN public.favorito f ON f.id_receita = r.id_receita
+         GROUP BY r.id_receita, r.titulo_receita, r.origem_receita, r.url_imagem, r.id_usuario, u.nome`
       );
       return res.status(200).json(result.rows);
     } catch (error) {
@@ -22,10 +22,10 @@ export const receitasController = {
     try {
       const { id } = req.params;
       const result = await db.query(
-        `SELECT r.id, r.titulo, r.origem, r.imagem, r.id_usuario, u.nome AS chef
-         FROM receitas r
-         JOIN usuarios u ON r.id_usuario = u.id
-         WHERE r.id = $1`,
+        `SELECT r.id_receita, r.titulo_receita, r.origem_receita, r.url_imagem, r.id_usuario, u.nome AS chef
+         FROM public.receita r
+         JOIN public.usuario u ON r.id_usuario = u.id_usuario
+         WHERE r.id_receita = $1`,
         [id]
       );
 
@@ -42,17 +42,18 @@ export const receitasController = {
 
   async create(req, res) {
     try {
-      const { titulo, origem, imagem, id_usuario } = req.body;
+      const { titulo_receita, origem_receita, url_imagem, id_usuario } = req.body;
 
-      if (!titulo || !origem || !imagem || !id_usuario) {
+      if (!titulo_receita || !origem_receita || !url_imagem || !id_usuario) {
         return res.status(400).json({ mensagem: "Todos os campos são obrigatórios." });
       }
 
+      const now = new Date();
       const result = await db.query(
-        `INSERT INTO receitas (titulo, origem, imagem, id_usuario) 
-         VALUES ($1, $2, $3, $4) 
-         RETURNING id, titulo, origem, imagem, id_usuario`,
-        [titulo, origem, imagem, id_usuario]
+        `INSERT INTO public.receita (titulo_receita, origem_receita, url_imagem, id_usuario, created_at, updated_at) 
+         VALUES ($1, $2, $3, $4, $5, $6) 
+         RETURNING id_receita, titulo_receita, origem_receita, url_imagem, id_usuario`,
+        [titulo_receita, origem_receita, url_imagem, id_usuario, now, now]
       );
 
       return res.status(201).json(result.rows[0]);
@@ -65,14 +66,15 @@ export const receitasController = {
   async update(req, res) {
     try {
       const { id } = req.params;
-      const { titulo, origem, imagem } = req.body;
+      const { titulo_receita, origem_receita, url_imagem } = req.body;
+      const now = new Date();
 
       const result = await db.query(
-        `UPDATE receitas 
-         SET titulo = $1, origem = $2, imagem = $3 
-         WHERE id = $4 
-         RETURNING id, titulo, origem, imagem, id_usuario`,
-        [titulo, origem, imagem, id]
+        `UPDATE public.receita 
+         SET titulo_receita = $1, origem_receita = $2, url_imagem = $3, updater_at = $4 
+         WHERE id_receita = $5 
+         RETURNING id_receita, titulo_receita, origem_receita, url_imagem, id_usuario`,
+        [titulo_receita, origem_receita, url_imagem, now, id]
       );
 
       if (result.rows.length === 0) {
@@ -89,11 +91,11 @@ export const receitasController = {
   async delete(req, res) {
     try {
       const { id } = req.params;
+      await db.query("DELETE FROM public.favorito WHERE id_receita = $1", [id]);
 
-      await db.query("DELETE FROM favoritos WHERE id_receita = $1", [id]);
 
       const result = await db.query(
-        "DELETE FROM receitas WHERE id = $1 RETURNING id",
+        "DELETE FROM public.receita WHERE id_receita = $1 RETURNING id_receita",
         [id]
       );
 
@@ -106,19 +108,7 @@ export const receitasController = {
       console.error(error);
       return res.status(500).json({ mensagem: "Erro ao excluir receita." });
     }
-  },
-
-  async listarPorUsuario(req, res) {
-    try {
-      const { id_usuario } = req.params;
-      const result = await db.query(
-        "SELECT id, titulo, origem, imagem FROM receitas WHERE id_usuario = $1",
-        [id_usuario]
-      );
-      return res.status(200).json(result.rows);
-    } catch (error) {
-      console.error(error);
-      return res.status(500).json({ mensagem: "Erro ao buscar receitas do usuário." });
-    }
   }
 };
+
+export default receitaController;
