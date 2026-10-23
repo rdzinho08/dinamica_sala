@@ -1,245 +1,489 @@
 <!DOCTYPE html>
+
 <html lang="pt-BR">
 
+
+
 <head>
+
     <meta charset="UTF-8">
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <link rel="stylesheet" href="style.css">
+
     <title>Pratica_chefs</title>
 
+
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
+
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+
         rel="stylesheet">
+
 </head>
 
+
+
 <body>
+
     <div class="cabecalho">
 
+
+
         <div class="secao_usuario">
+
             <img id="foto_usuario" src="../anexos_prova/imagens_usuarios/usuario1.jpg" alt="Foto do usuário">
 
+
+
             <div class="perfil">
+
                 <p id="nome_usuario">SAEPChef</p>
+
                 <button class="btn-perfil" type="button">Ver Perfil</button>
+
             </div>
+
         </div>
+
         <div class="secao_empresa">
+
             SAEPChef
+
         </div>
+
+
 
         <div class="modal">
+
             <button id="btn-login" type="button">Login</button>
 
+
+
             <div id="modal-container" class="modal-container">
+
                 <div class="modal-conteudo">
+
                     <h2>Login</h2>
 
-                    <form id="form-login">
-                        <label for="email">E-mail:</label>
-                        <input type="email" id="email" name="email" required>
 
-                        <label for="senha">Senha:</label>
-                        <input type="password" id="senha" name="senha" required>
+
+                    <form id="form-login">
+
+                        <label for="input-email">E-mail:</label>
+
+                        <input type="email" id="input-email" name="email" required>
+
+
+
+                        <label for="input-senha">Senha:</label>
+
+                        <input type="password" id="input-senha" name="senha" required>
+
+
 
                         <button type="submit">Entrar</button>
+
                         <span id="btn-fechar" class="btn-fechar">&times;</span>
+
                     </form>
+
                 </div>
+
             </div>
+
         </div>
 
+
+
     </div>
+
+
+
 
 
     <div id="fundo-perfil" class="fundo-perfil"></div>
 
 
+
+
+
     <div id="menu-perfil" class="menu-perfil">
 
+
+
         <button id="fechar-perfil" class="fechar-perfil" type="button" aria-label="Fechar menu">
+
             &times;
+
         </button>
+
+
+
 
 
         <div class="perfil-menu">
 
+
+
             <img id="foto-menu-perfil" src="../anexos_prova/imagens_usuarios/usuario1.jpg" alt="Foto do chef">
 
+
+
             <h3 id="nome-menu-perfil">SAEPChef</h3>
+
             <p class="usuario-tag">@chef1</p>
+
+
 
             <span class="etiqueta-chef">Chef da comunidade</span>
 
+
+
         </div>
+
+
+
 
 
         <div class="estatisticas-perfil">
 
-            <div class="estatistica">
-                <span id="quantidade-favoritas">0</span>
-                <p>Receitas favoritas</p>
-            </div>
+
 
             <div class="estatistica">
-                <span id="quantidade-receitas">0</span>
-                <p>Receitas criadas</p>
+
+                <span id="quantidade-favoritas">0</span>
+
+                <p>Receitas favoritas</p>
+
             </div>
+
+
+
+            <div class="estatistica">
+
+                <span id="quantidade-receitas">0</span>
+
+                <p>Receitas criadas</p>
+
+            </div>
+
+
 
         </div>
 
 
+
+
+
         <button id="btn-criar-receita" class="btn-criar-receita" type="button">
+
             + Criar receita
+
         </button>
+
+
 
         <hr>
 
 
+
+
+
         <nav class="opcoes-menu">
 
+
+
             <a href="index.html" class="opcao-menu">
+
                 <span>⌂</span> Meu perfil
+
             </a>
 
+
+
             <a href="#" class="opcao-menu">
+
                 <span>♨</span> Minhas receitas
+
             </a>
 
+
+
             <a href="#" class="opcao-menu">
+
                 <span>♡</span> Receitas favoritas
+
             </a>
 
+
+
             <a href="#" class="opcao-menu">
+
                 <span>⚙</span> Configurações
+
             </a>
+
+
 
         </nav>
 
 
+
+
+
         <div class="rodape-menu">
+
             <p>SAEPChef</p>
+
             <small>Compartilhe o sabor!</small>
+
         </div>
 
+
+
     </div>
+
+
+
 
 
     <div class="campo-busca">
+
         <input id="barra-pesquisa" type="text" placeholder="Digite o nome do chef... ex: @chef1">
 
+
+
         <img src="../anexos_prova/icones/lupa.svg" alt="Ícone de lupa" id="icone-lupa">
+
     </div>
+
+
 
     <div class="mural-receitas">
 
+
+
         <div class="receita" data-id="1">
+
             <img class="img-receita" src="../anexos_prova/receitas/receita1.jpg" alt="Receita 1">
+
             <p>Receita 1</p>
+
             <div class="avaliacao-receita">
+
                 <img class="img-icone" src="../anexos_prova/icones/estrela.svg" alt="Avaliação">
+
                 <p>10</p>
+
             </div>
+
         </div>
+
+
 
         <div class="receita" data-id="2">
+
             <img class="img-receita" src="../anexos_prova/receitas/receita2.jpg" alt="Receita 2">
+
             <p>Receita 2</p>
+
             <div class="avaliacao-receita">
+
                 <img class="img-icone" src="../anexos_prova/icones/estrela.svg" alt="Avaliação">
+
                 <p>5</p>
+
             </div>
+
         </div>
+
+
 
         <div class="receita" data-id="3">
+
             <img class="img-receita" src="../anexos_prova/receitas/receita3.jpg" alt="Receita 3">
+
             <p>Receita 3</p>
+
             <div class="avaliacao-receita">
+
                 <img class="img-icone" src="../anexos_prova/icones/estrela.svg" alt="Avaliação">
+
                 <p>12</p>
+
             </div>
+
         </div>
+
+
 
         <div class="receita" data-id="4">
+
             <img class="img-receita" src="../anexos_prova/receitas/receita4.jpg" alt="Receita 4">
+
             <p>Receita 4</p>
+
             <div class="avaliacao-receita">
+
                 <img class="img-icone" src="../anexos_prova/icones/estrela.svg" alt="Avaliação">
+
                 <p>8</p>
+
             </div>
+
         </div>
+
+
 
         <div class="receita" data-id="5">
+
             <img class="img-receita" src="../anexos_prova/receitas/receita5.jpg" alt="Receita 5">
+
             <p>Receita 5</p>
+
             <div class="avaliacao-receita">
+
                 <img class="img-icone" src="../anexos_prova/icones/estrela.svg" alt="Avaliação">
+
                 <p>15</p>
+
             </div>
+
         </div>
+
+
 
         <div class="receita" data-id="6">
+
             <img class="img-receita" src="../anexos_prova/receitas/receita6.jpg" alt="Receita 6">
+
             <p>Receita 6</p>
+
             <div class="avaliacao-receita">
+
                 <img class="img-icone" src="../anexos_prova/icones/estrela.svg" alt="Avaliação">
+
                 <p>23</p>
+
             </div>
+
         </div>
+
+
 
         <div class="receita" data-id="7">
+
             <img class="img-receita" src="../anexos_prova/receitas/receita7.jpg" alt="Receita 7">
+
             <p>Receita 7</p>
+
             <div class="avaliacao-receita">
+
                 <img class="img-icone" src="../anexos_prova/icones/estrela.svg" alt="Avaliação">
+
                 <p>6</p>
+
             </div>
+
         </div>
+
+
 
         <div class="receita" data-id="8">
+
             <img class="img-receita" src="../anexos_prova/receitas/receita8.jpg" alt="Receita 8">
+
             <p>Receita 8</p>
+
             <div class="avaliacao-receita">
+
                 <img class="img-icone" src="../anexos_prova/icones/estrela.svg" alt="Avaliação">
+
                 <p>11</p>
+
             </div>
+
         </div>
+
+
 
         <div class="receita" data-id="9">
+
             <img class="img-receita" src="../anexos_prova/receitas/receita9.jpg" alt="Receita 9">
+
             <p>Receita 9</p>
+
             <div class="avaliacao-receita">
+
                 <img class="img-icone" src="../anexos_prova/icones/estrela.svg" alt="Avaliação">
+
                 <p>1</p>
+
             </div>
+
         </div>
 
+
+
     </div>
+
+
+
 
 
     <div id="modal-receita-container" class="modal-container">
 
+
+
         <div class="modal-conteudo modal-receita-conteudo">
+
+
 
             <span id="btn-fechar-receita" class="btn-fechar">&times;</span>
 
+
+
             <img id="img-modal-receita" src="" alt="Imagem da receita">
+
+
 
             <h2 id="titulo-modal-receita"></h2>
 
+
+
             <div class="avaliacao-modal">
+
                 <img class="img-icone" src="../anexos_prova/icones/estrela.svg" alt="Avaliação">
+
                 <span id="avaliacao-modal-receita"></span>
+
             </div>
 
+
+
             <h3 class="subtitulo-descricao">Descrição:</h3>
+
             <p id="descricao-modal-receita"></p>
 
+
+
         </div>
+
     </div>
+
+
 
     <script src="script.js"></script>
 
+
+
 </body>
+
+
 
 </html>

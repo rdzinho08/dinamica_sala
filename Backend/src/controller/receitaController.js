@@ -2,23 +2,25 @@ import db from "../config/db.js";
 
 export const receitaController = {
   async getAll(req, res) {
+    console.log('>>> [GET] Requisição para listar todas as receitas');
     try {
       const result = await db.query(
         `SELECT r.id_receita, r.titulo_receita, r.origem_receita, r.url_imagem, r.id_usuario, u.nome AS chef,
                 COUNT(f.id_favorito)::int AS total_favorito
          FROM public.receita r
          JOIN public.usuario u ON r.id_usuario = u.id_usuario
-         LEFT JOIN public.favorito f ON f.id_receita = r.id_receita
+         LEFT JOIN public.favoritar f ON f.id_receita = r.id_receita
          GROUP BY r.id_receita, r.titulo_receita, r.origem_receita, r.url_imagem, r.id_usuario, u.nome`
       );
       return res.status(200).json(result.rows);
     } catch (error) {
-      console.error(error);
+      console.error("Erro no getAll de receitas:", error);
       return res.status(500).json({ mensagem: "Erro ao buscar receitas." });
     }
   },
 
   async getById(req, res) {
+    console.log(`>>> [GET] Requisição para buscar receita ID: ${req.params.id}`);
     try {
       const { id } = req.params;
       const result = await db.query(
@@ -35,35 +37,44 @@ export const receitaController = {
 
       return res.status(200).json(result.rows[0]);
     } catch (error) {
-      console.error(error);
+      console.error("Erro no getById de receitas:", error);
       return res.status(500).json({ mensagem: "Erro ao buscar receita." });
     }
   },
 
   async create(req, res) {
+    console.log('>>> [POST] Requisição para criar receita:', req.body);
     try {
       const { titulo_receita, origem_receita, url_imagem, id_usuario } = req.body;
 
-      if (!titulo_receita || !origem_receita || !url_imagem || !id_usuario) {
-        return res.status(400).json({ mensagem: "Todos os campos são obrigatórios." });
+      if (!titulo_receita || !origem_receita) {
+        return res.status(400).json({ mensagem: "Título e origem da receita são obrigatórios." });
       }
 
       const now = new Date();
       const result = await db.query(
-        `INSERT INTO public.receita (titulo_receita, origem_receita, url_imagem, id_usuario, created_at, updated_at) 
+        `INSERT INTO public.receita (titulo_receita, origem_receita, url_imagem, id_usuario, created_at, updater_at) 
          VALUES ($1, $2, $3, $4, $5, $6) 
          RETURNING id_receita, titulo_receita, origem_receita, url_imagem, id_usuario`,
-        [titulo_receita, origem_receita, url_imagem, id_usuario, now, now]
+        [
+          titulo_receita, 
+          origem_receita, 
+          url_imagem || '', 
+          id_usuario || 1, 
+          now, 
+          now
+        ]
       );
 
       return res.status(201).json(result.rows[0]);
     } catch (error) {
-      console.error(error);
+      console.error("Erro ao criar receita:", error);
       return res.status(500).json({ mensagem: "Erro ao cadastrar receita." });
     }
   },
 
   async update(req, res) {
+    console.log(`>>> [PUT] Requisição para atualizar receita ID: ${req.params.id}`);
     try {
       const { id } = req.params;
       const { titulo_receita, origem_receita, url_imagem } = req.body;
@@ -83,16 +94,18 @@ export const receitaController = {
 
       return res.status(200).json(result.rows[0]);
     } catch (error) {
-      console.error(error);
+      console.error("Erro ao atualizar receita:", error);
       return res.status(500).json({ mensagem: "Erro ao atualizar receita." });
     }
   },
 
   async delete(req, res) {
+    console.log(`>>> [DELETE] Requisição para excluir receita ID: ${req.params.id}`);
     try {
       const { id } = req.params;
-      await db.query("DELETE FROM public.favorito WHERE id_receita = $1", [id]);
-
+      
+     
+      await db.query("DELETE FROM public.favoritar WHERE id_receita = $1", [id]);
 
       const result = await db.query(
         "DELETE FROM public.receita WHERE id_receita = $1 RETURNING id_receita",
@@ -105,7 +118,7 @@ export const receitaController = {
 
       return res.status(200).json({ mensagem: "Receita excluída com sucesso." });
     } catch (error) {
-      console.error(error);
+      console.error("Erro ao excluir receita:", error);
       return res.status(500).json({ mensagem: "Erro ao excluir receita." });
     }
   }
